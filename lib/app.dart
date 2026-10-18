@@ -12,7 +12,7 @@ class MausamieApp extends StatelessWidget {
       primarySwatch: Colors.lightBlue,
       fontFamily: 'Arial',
       textTheme: TextTheme(
-        bodyLarge: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),
+        bodyLarge: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
       )
      ),
      home:WeatherScreen(),

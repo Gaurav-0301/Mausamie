@@ -4,6 +4,6 @@ class WeatherCondition {
   final String description;
   WeatherCondition({required this.main, required this.description});
   WeatherCondition.fromJson(Map<String, dynamic> json)
-    : main = json['weather']['main'].toString(),
-      description = json['weather']['description'].toString();
+    : main = json['weather'][0]['main'].toString(),
+      description = json['weather'][0]['description'].toString();
 }
