@@ -1,3 +1,4 @@
+
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
@@ -30,20 +31,33 @@ class _RotatingEarthState extends State<RotatingEarth>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      child: ClipOval(
-        child: Image.asset(
-          'assets/images/earth.png',
-          fit: BoxFit.cover,
-          width: 250,
-          height: 250,
-        ),
-      ),
-      builder: (context, child) {
-        return Transform.rotate(
-          angle: _controller.value * 2 * math.pi,
-          child: child,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final size = math.min(
+          constraints.maxWidth,
+          constraints.maxHeight,
+        );
+
+        return AnimatedBuilder(
+          animation: _controller,
+          child: SizedBox(
+            width: size,
+            height: size,
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/earth.png',
+                fit: BoxFit.cover,
+                width: size,
+                height: size,
+              ),
+            ),
+          ),
+          builder: (context, child) {
+            return Transform.rotate(
+              angle: _controller.value * 2 * math.pi,
+              child: child,
+            );
+          },
         );
       },
     );
