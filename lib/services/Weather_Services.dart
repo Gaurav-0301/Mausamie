@@ -1,5 +1,5 @@
-
 import 'dart:convert';
+
 import 'package:mausamie/models/WeatherModel.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,8 +9,7 @@ class WeatherServices {
 
   Future<WeatherModel?> getWeatherData(String cityName) async {
     try {
-      var url =
-          "$baseUrl/weather?q=$cityName&appid=$apiId&units=metric";
+      var url = "$baseUrl/weather?q=$cityName&appid=$apiId&units=metric";
 
       http.Response response = await http.get(Uri.parse(url));
 
@@ -19,13 +18,11 @@ class WeatherServices {
         return WeatherModel.fromJson(jsonData);
       }
 
-      print("Error: ${response.statusCode}");
-      print(response.body);
-      return null;
+    
+      throw Exception("Error: ${response.statusCode},");
+   
     } catch (e) {
-      print("Weather error: $e");
-      return null;
+      throw Exception("Error: $e");
     }
   }
 }
-
