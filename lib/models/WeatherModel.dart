@@ -7,11 +7,16 @@ class WeatherModel {
   final WeatherCondition condition;
   final MainWeatherData data;
 
-  WeatherModel(
-    {
-      required this.cityName, 
-      required this.countryName,
-       required this.condition,
-        required this.data
-        });
+  WeatherModel({
+    required this.cityName,
+    required this.countryName,
+    required this.condition,
+    required this.data,
+  });
+
+  WeatherModel.fromJson(Map<String, dynamic> json)
+    : cityName = json['name'].toString(),
+      countryName = json['sys']['country'].toString(),
+      condition = WeatherCondition.fromJson(json),
+      data = MainWeatherData.fromJson(json);
 }
