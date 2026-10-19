@@ -1,5 +1,5 @@
-import 'dart:convert';
 
+import 'dart:convert';
 import 'package:mausamie/models/WeatherModel.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,22 +7,32 @@ class WeatherServices {
   final baseUrl = "https://api.openweathermap.org/data/2.5";
   final apiId = "c9b2f8ad8a97a4ad2c80f3557289c4ac";
 
-  Future<WeatherModel?> getWeatherData(String cityName) async {
-    try {
-      var url = "$baseUrl/weather?q=$cityName&appid=$apiId&units=metric";
+  Future<WeatherModel> getWeatherData(String cityName) async {
+    final url = Uri.parse(
+      "$baseUrl/weather?q=${Uri.encodeQueryComponent(cityName)}"
+      "&appid=$apiId&units=metric",
+    );
 
-      http.Response response = await http.get(Uri.parse(url));
+    try {
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
+        final jsonData = jsonDecode(response.body);
         return WeatherModel.fromJson(jsonData);
       }
 
-    
-      throw Exception("Error: ${response.statusCode},");
-   
+      if (response.statusCode == 404) {
+        throw Exception("City not found. Please enter a valid city.");
+      }
+
+      if (response.statusCode == 401) {
+        throw Exception("Invalid API key.");
+      }
+
+      throw Exception("Unable to fetch weather. Try again later.");
     } catch (e) {
-      throw Exception("Error: $e");
+      if (e is Exception) rethrow;
+      throw Exception("Network error. Check your internet connection.");
     }
   }
 }
