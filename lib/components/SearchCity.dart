@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class SearchCity extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onSearch;
+  final VoidCallback? onCurrentLocation;
 
   const SearchCity({
     super.key,
     required this.controller,
     required this.onSearch,
+    this.onCurrentLocation,
   });
 
   @override
@@ -39,10 +41,16 @@ class SearchCity extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.location_city_rounded,
-            color: const Color(0xFF52718F),
-            size: iconSize,
+          IconButton(
+            onPressed: onCurrentLocation,
+            tooltip: 'Get current location weather',
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            icon: Icon(
+              Icons.my_location_rounded,
+              color: const Color(0xFF168BFF),
+              size: iconSize,
+            ),
           ),
           SizedBox(width: gap),
           Expanded(

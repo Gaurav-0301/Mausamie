@@ -19,11 +19,25 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
   final TextEditingController cityEditingController =
       TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchCurrentLocationWeather();
+    });
+  }
+
   void fetchWeather() {
     final city = cityEditingController.text.trim();
 
     FocusScope.of(context).unfocus();
     ref.read(weatherProvider.notifier).getWeather(city);
+  }
+
+  void fetchCurrentLocationWeather() {
+    cityEditingController.clear();
+    FocusScope.of(context).unfocus();
+    ref.read(weatherProvider.notifier).fetchCurrentLocationWeather();
   }
 
   @override
@@ -47,7 +61,6 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
     final earthSize =
         (screenWidth * 0.90).clamp(260.0, 480.0);
 
-    final headerHeight = screenHeight < 700 ? 175.0 : 195.0;
     final contentTopPadding =
         (screenHeight * 0.32).clamp(210.0, 300.0);
 
@@ -147,6 +160,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                       SearchCity(
                         controller: cityEditingController,
                         onSearch: fetchWeather,
+                        onCurrentLocation: fetchCurrentLocationWeather,
                       ),
                     ],
                   ),
@@ -234,11 +248,30 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                                             fontSize: 14,
                                           ),
                                         ),
-                                        const SizedBox(height: 12),
-                                        TextButton.icon(
-                                          onPressed: fetchWeather,
-                                          icon: const Icon(Icons.refresh),
-                                          label: const Text('Try again'),
+                                        const SizedBox(height: 14),
+                                        Wrap(
+                                          alignment: WrapAlignment.center,
+                                          spacing: 8,
+                                          runSpacing: 8,
+                                          children: [
+                                            TextButton.icon(
+                                              onPressed: fetchCurrentLocationWeather,
+                                              icon: const Icon(
+                                                Icons.my_location_rounded,
+                                                size: 18,
+                                              ),
+                                              label: const Text('Use Current Location'),
+                                            ),
+                                            if (cityEditingController.text.trim().isNotEmpty)
+                                              TextButton.icon(
+                                                onPressed: fetchWeather,
+                                                icon: const Icon(
+                                                  Icons.refresh,
+                                                  size: 18,
+                                                ),
+                                                label: const Text('Retry Search'),
+                                              ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -272,12 +305,29 @@ if (weather == null) {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Search a city to see its weather.',
+            'Search a city or use your current location.',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xFFADC5DF),
               fontSize: 14,
             ),
+          ),
+          const SizedBox(height: 18),
+          ElevatedButton.icon(
+            onPressed: fetchCurrentLocationWeather,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF168BFF),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            icon: const Icon(Icons.my_location_rounded, size: 18),
+            label: const Text('Detect Current Location'),
           ),
         ],
       ),
