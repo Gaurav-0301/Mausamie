@@ -25,7 +25,9 @@
 
 ---
 
-## 📲 Download APK An Android APK download will be available here when a release is published. **[Download Mausamie APK](https://github.com/Gaurav-0301/Mausamie/releases)** Visit the Releases page to check for an available build.
+## 📲 Download APK 
+An Android APK download will be available here when a release is published. **[Download Mausamie APK](https://github.com/Gaurav-0301/Mausamie/releases)** 
+Visit the Releases page to check for an available build.
 
 
 ## ✨ Features
