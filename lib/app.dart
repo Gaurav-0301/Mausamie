@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mausamie/screens/WeatherScreen.dart';
 
 class MausamieApp extends StatelessWidget {
-  const new({super.key});
+  const MausamieApp({super.key});
 
   @override
   Widget build(BuildContext context) {
