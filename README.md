@@ -1,4 +1,4 @@
-# 🌍 Mausamie (मौसम) - Real-Time Weather Application
+# 🌍 Mausamie- Real-Time Weather Application
 
 <p align="center">
   <img src="assets/icon/app_icon.png" alt="Mausamie Logo" width="140" height="140" />
@@ -103,42 +103,7 @@ graph TD
 
 ---
 
-### Unidirectional Data Flow (UDF)
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as 👤 User / Device Startup
-    participant UI as 📱 WeatherScreen
-    participant Notifier as ⚡ WeatherNotifier (Riverpod)
-    participant LocService as 📍 LocationServices
-    participant WeathService as ☁️ WeatherServices
-    participant API as 🌐 OpenWeatherMap API
-
-    User->>UI: App Opened / Search Triggered
-    UI->>Notifier: fetchCurrentLocationWeather() / getWeather(cityName)
-    Notifier->>Notifier: Set state: isLoading = true, errorMessage = ''
-    Notifier-->>UI: Rebuild with CircularProgressIndicator
-
-    alt Current Location Flow
-        Notifier->>LocService: getCurrentLocation()
-        LocService->>LocService: Check GPS & Request Permission
-        LocService-->>Notifier: Position (lat, lon)
-        Notifier->>WeathService: getWeatherByCoordinates(lat, lon)
-    else Manual City Flow
-        Notifier->>WeathService: getWeatherData(cityName)
-    end
-
-    WeathService->>API: HTTP GET /data/2.5/weather
-    API-->>WeathService: JSON Response (200 OK)
-    WeathService->>WeathService: WeatherModel.fromJson(jsonData)
-    WeathService-->>Notifier: WeatherModel instance
-
-    Notifier->>Notifier: Set state: isLoading = false, weather = model
-    Notifier-->>UI: Rebuild with WeatherInfoCard & WeatherDetails
-```
-
----
 
 ## 📂 Project Directory Structure
 
